@@ -1,0 +1,23 @@
+{
+  "name": "pep_web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anirudh797/Web_Dev.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anirudh797/Web_Dev/issues"
+  },
+  "homepage": "https://github.com/anirudh797/Web_Dev#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.10"
+  }
+}
