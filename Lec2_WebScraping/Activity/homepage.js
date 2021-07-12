@@ -33,6 +33,6 @@ function parseData(html)
     let aTag = ch(".widget-items.cta-link a").attr("href");
 
     let complete = "https://www.espncricinfo.com"+aTag;
-    console.log(complete);
+    // console.log(complete);
     getAllMatches(complete)
 }

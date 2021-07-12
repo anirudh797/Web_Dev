@@ -1,7 +1,8 @@
 let request = require("request");
 let fs = require("fs");
 let cheerio = require("cheerio");
-
+let getMatch = require('./match');
+//saare matches nikalne ke liye
 
 function getAllMatches(link)
 {
@@ -30,6 +31,7 @@ function cb(error,response,html)
     }
 
 }
+
 function parseData(html)
 {
     let ch = cheerio.load(html);
@@ -43,8 +45,9 @@ function parseData(html)
         let link =ch(allATags[i]).attr("href");
     let complete = "https://www.espncricinfo.com"+link;
         
+        getMatch(complete);
         
-        console.log(complete);
+        // console.log(complete);
 
     }
 
