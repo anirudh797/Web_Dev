@@ -2,21 +2,34 @@ let fs = require('fs');
 let request= require('request');
 let cheerio = require('cheerio');
 
+let leaderboard =[];
 //ek match ki details nikalne ke liye
-
+let count=0;
 function getMatch(link)
 {
+    console.log("Sending request",count);
     request(link,cb);
+    count+=1;
+
 }
 
 module.exports = getMatch;
+
 
 
 function cb(error,response,html)
 {
     if( error == null && response.statusCode == 200)
     {
+        count--;
+        console.log("Received Data "+ count);
         parseData(html);
+
+        if(count==0)
+        {
+            console.log(leaderboard.length);
+            console.table(leaderboard);
+        }
     }
 
     else if(response.statusCode == 404)
@@ -33,6 +46,9 @@ function cb(error,response,html)
 
 function parseData(html)
 {
+    
+
+
     let ch = cheerio.load(html);
     let bothInnings = ch(".card.content-block.match-scorecard-table .Collapsible");
 
@@ -69,78 +85,77 @@ function parseData(html)
 
     }
 
-    console.log("************************************************");
+    // console.log("************************************************");
 }
 
 
-function leaderboardFileExist()
-{
-    return fs.existsSync("./leaderboard.json");
-}
+// function leaderboardFileExist()
+// {
+//     return fs.existsSync("./leaderboard.json");
+// }
 
-function createLeaderboardFile(batsmanName,runs,balls,four,six)
-{
-    fs.mkdirSync("leaderboard.json");
-    let leaderboard=[];
-    let innings ={
-        BatsmanName : batsmanName,
-        Runs : runs,
-        Balls : balls,
-        Fours : four,
-        Sixes : six 
-    }
+// function createLeaderboardFile(batsmanName,runs,balls,four,six)
+// {
+//     fs.mkdirSync("leaderboard.json");
+//     let leaderboard=[];
+//     let innings ={
+//         BatsmanName : batsmanName,
+//         Runs : runs,
+//         Balls : balls,
+//         Fours : four,
+//         Sixes : six 
+//     }
     
-    leaderboard.push(innings);
-    leaderboard = JSON.stringify(leaderboard);
+//     leaderboard.push(innings);
+//     leaderboard = JSON.stringify(leaderboard);
 
 
-}
+// }
 
-function updateLeaderBoardFile(batsmanName,runs,balls,four,six)
-{
+// function updateLeaderBoardFile(batsmanName,runs,balls,four,six)
+// {
 
-    let leaderboard = fs.readFileSync("leaderboard.json");
-    leaderboard= JSON.parse(leaderboard);
+//     let leaderboard = fs.readFileSync("leaderboard.json");
+//     leaderboard= JSON.parse(leaderboard);
     
 
-    let data=[];
+//     let data=[];
 
-    for(let i=0; i<leaderboard.length; i++)
-    {
-        let batsmanData = leaderboard[i];
-        if(leaderboard[i].BatsmanName == batsmanName)
-        {
+//     for(let i=0; i<leaderboard.length; i++)
+//     {
+//         let batsmanData = leaderboard[i];
+//         if(leaderboard[i].BatsmanName == batsmanName)
+//         {
 
-            batsmanData.Runs+=runs;
-            batsmanData.Balls+=balls;
-            batsmanData.Fours+=four;
-            batsmanData.Sixes+=six;
-            data.push(batsmanData);
-            return;
-        }
+//             batsmanData.Runs+=runs;
+//             batsmanData.Balls+=balls;
+//             batsmanData.Fours+=four;
+//             batsmanData.Sixes+=six;
+//             data.push(batsmanData);
+//             return;
+//         }
         
-    }
+//     }
 
-    //batsman Data does not exit , so we create it for the first time
-    data.push({
-        BatsmanName : batsmanName,
-        Runs : runs,
-        Balls : balls,
-        Fours : four,
-        Sixes : six 
+//     //batsman Data does not exit , so we create it for the first time
+//     data.push({
+//         BatsmanName : batsmanName,
+//         Runs : runs,
+//         Balls : balls,
+//         Fours : four,
+//         Sixes : six 
 
-    });
+//     });
 
 
-    data = JSON.stringify(data);
-    fs.writeFileSync("leaderboard.json",data);
+//     data = JSON.stringify(data);
+//     fs.writeFileSync("leaderboard.json",data);
 
     
 
-}
+// }
 
-let leaderboard= [];
-function createLeaderboard(teamName,batsmanName,runs,balls,four,six)
+function createLeaderboard(teamName,batsmanName,runs,balls,fours,sixes)
 {
     
 
